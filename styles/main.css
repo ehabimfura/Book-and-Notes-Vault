@@ -1,0 +1,269 @@
+/* ========================================
+   main.css — Base reset, tokens, typography, layout
+   Inspired by Open Research Library's academic aesthetic
+   ======================================== */
+
+/* ---------- Google Font Import ---------- */
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+Pro:wght@300;400;600;700&display=swap');
+
+/* ---------- CSS Custom Properties ---------- */
+:root {
+  /* Colors — ORL-inspired palette */
+  --clr-bg: #e8edf2;
+  --clr-surface: #ffffff;
+  --clr-surface-alt: #f4f6f9;
+  --clr-border: #d4dbe4;
+  --clr-divider: #e2e7ed;
+
+  --clr-primary: #3d7a9e;
+  /* Steel blue — brand */
+  --clr-primary-dark: #2c6080;
+  --clr-primary-light: #5b9aba;
+  --clr-accent: #4a8db8;
+  /* ORL link/button blue */
+  --clr-accent-hover: #3a7299;
+  --clr-secondary: #2c6080;
+  --clr-secondary-light: #5b9aba;
+  --clr-heading: #1a5276;
+  /* Dark blue for headings */
+
+  --clr-success: #27855a;
+  --clr-error: #c0392b;
+  --clr-warning: #d68910;
+
+  --clr-text: #333333;
+  --clr-text-muted: #6c7a89;
+  --clr-text-inverse: #ffffff;
+  --clr-text-meta: #7f8c99;
+
+  /* Typography — Serif headings, sans-serif body (ORL style) */
+  --ff-heading: 'Merriweather', Georgia, 'Times New Roman', serif;
+  --ff-body: 'Source Sans Pro', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --fs-xs: 0.75rem;
+  --fs-sm: 0.875rem;
+  --fs-base: 1rem;
+  --fs-md: 1.0625rem;
+  --fs-lg: 1.25rem;
+  --fs-xl: 1.5rem;
+  --fs-2xl: 1.75rem;
+  --fs-3xl: 2rem;
+  --fw-light: 300;
+  --fw-normal: 400;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+
+  /* Spacing */
+  --sp-xs: 0.25rem;
+  --sp-sm: 0.5rem;
+  --sp-md: 1rem;
+  --sp-lg: 1.5rem;
+  --sp-xl: 2rem;
+  --sp-2xl: 3rem;
+
+  /* Borders & Radius */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 10px;
+  --radius-pill: 50px;
+  --radius-full: 9999px;
+
+  /* Shadows — subtle, academic style */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.1);
+
+  /* Transitions */
+  --transition-fast: 150ms ease;
+  --transition-base: 250ms ease;
+  --transition-slow: 400ms ease;
+
+  /* Z-index layers */
+  --z-header: 100;
+  --z-modal: 200;
+  --z-skip: 300;
+}
+
+/* ---------- Modern Reset ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--ff-body);
+  font-size: var(--fs-base);
+  font-weight: var(--fw-normal);
+  line-height: 1.65;
+  color: var(--clr-text);
+  background-color: var(--clr-bg);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+a {
+  color: var(--clr-accent);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+a:hover {
+  color: var(--clr-primary-dark);
+  text-decoration: underline;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+/* ---------- Accessibility Utilities ---------- */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  z-index: var(--z-skip);
+  background: var(--clr-primary-dark);
+  color: var(--clr-text-inverse);
+  padding: 0.75rem 1.5rem;
+  font-family: var(--ff-body);
+  font-size: var(--fs-base);
+  font-weight: var(--fw-semibold);
+  border-radius: 0 0 var(--radius-md) 0;
+}
+
+.skip-link:focus {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: auto;
+  height: auto;
+  text-decoration: none;
+}
+
+/* ---------- Focus Visible ---------- */
+:focus-visible {
+  outline: 3px solid var(--clr-primary-light);
+  outline-offset: 2px;
+}
+
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* ---------- Layout ---------- */
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--sp-md);
+}
+
+.section {
+  padding: var(--sp-xl) 0;
+}
+
+.section-title {
+  font-family: var(--ff-heading);
+  font-size: var(--fs-xl);
+  font-weight: var(--fw-bold);
+  color: var(--clr-heading);
+  margin-bottom: var(--sp-lg);
+  position: relative;
+  padding-bottom: var(--sp-sm);
+}
+
+.section-title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 50px;
+  height: 3px;
+  background: var(--clr-primary);
+  border-radius: var(--radius-full);
+}
+
+/* ---------- Typography ---------- */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--ff-heading);
+  line-height: 1.35;
+  color: var(--clr-heading);
+}
+
+p {
+  margin-bottom: var(--sp-md);
+}
+
+strong {
+  font-weight: var(--fw-semibold);
+}
+
+/* ---------- Mark (search highlight) ---------- */
+mark {
+  background-color: #fef3cd;
+  color: var(--clr-text);
+  padding: 1px 4px;
+  border-radius: 3px;
+  border-bottom: 2px solid var(--clr-warning);
+}
+
+/* ---------- Reduced Motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

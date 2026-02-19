@@ -1,0 +1,165 @@
+/* ========================================
+   responsive.css — Mobile-first media queries
+   3 breakpoints: base (≤360px), 768px, 1024px
+   ======================================== */
+
+/* ---------- BASE / MOBILE (default, ≤ 767px) ---------- */
+
+/* On mobile: show cards, hide table */
+.records-cards {
+    display: block;
+}
+
+.table-wrapper {
+    display: none;
+}
+
+/* Stack the form row on small screens */
+.form-row {
+    flex-direction: column;
+    gap: 0;
+}
+
+/* Nav toggle visible on mobile */
+.nav-toggle {
+    display: flex;
+}
+
+/* ---------- TABLET (≥ 768px) ---------- */
+@media (min-width: 768px) {
+
+    /* Hide hamburger, show nav inline */
+    .nav-toggle {
+        display: none;
+    }
+
+    .main-nav {
+        display: block;
+        position: static;
+        background: transparent;
+        border-bottom: none;
+        box-shadow: none;
+        animation: none;
+    }
+
+    .nav-list {
+        flex-direction: row;
+        gap: 0;
+    }
+
+    .nav-link {
+        padding: var(--sp-sm) var(--sp-md);
+        border-bottom: none;
+        border-left: none;
+        border-radius: var(--radius-sm);
+    }
+
+    .nav-link.active {
+        border-left: none;
+        color: var(--clr-primary);
+        background: var(--clr-surface-alt);
+        border-bottom: 2px solid var(--clr-primary);
+        border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+    }
+
+    /* Show table, hide cards */
+    .table-wrapper {
+        display: block;
+    }
+
+    .records-cards {
+        display: none;
+    }
+
+    /* Form row side-by-side */
+    .form-row {
+        flex-direction: row;
+        gap: var(--sp-md);
+    }
+
+    /* Stats grid: 4 columns */
+    .stats-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    /* Section title sizing */
+    .section-title {
+        font-size: var(--fs-2xl);
+    }
+
+    /* Footer horizontal */
+    .site-footer .container {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    /* Container padding */
+    .container {
+        padding: 0 var(--sp-xl);
+    }
+
+    /* Section spacing */
+    .section {
+        padding: var(--sp-2xl) 0;
+    }
+}
+
+/* ---------- DESKTOP (≥ 1024px) ---------- */
+@media (min-width: 1024px) {
+
+    /* Larger logo */
+    .logo {
+        font-size: var(--fs-xl);
+    }
+
+    /* Nav link spacing */
+    .nav-link {
+        padding: var(--sp-sm) var(--sp-lg);
+        font-size: var(--fs-sm);
+    }
+
+    /* Stats grid refinement */
+    .stats-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: var(--sp-lg);
+    }
+
+    .stat-card {
+        padding: var(--sp-xl);
+    }
+
+    .stat-value {
+        font-size: var(--fs-2xl);
+    }
+
+    /* Wider form */
+    .book-form {
+        max-width: 700px;
+    }
+
+    /* Settings two-column */
+    .settings-grid {
+        max-width: 700px;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .settings-group--data {
+        grid-column: 1 / -1;
+    }
+
+    /* Table padding */
+    .records-table th,
+    .records-table td {
+        padding: var(--sp-md) var(--sp-xl);
+    }
+
+    /* Container padding */
+    .container {
+        padding: 0 var(--sp-2xl);
+    }
+
+    /* About section wider */
+    .about-content {
+        max-width: 720px;
+    }
+}

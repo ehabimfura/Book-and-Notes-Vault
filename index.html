@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Book &amp; Notes Vault — A personal catalog to track books, pages, tags, and reading notes with search, sorting, and stats." />
+  <title>Book &amp; Notes Vault</title>
+  <link rel="stylesheet" href="styles/main.css" />
+  <link rel="stylesheet" href="styles/components.css" />
+  <link rel="stylesheet" href="styles/responsive.css" />
+</head>
+<body>
+
+  <!-- Skip Link -->
+  <a href="#main-content" class="skip-link">Skip to content</a>
+
+  <!-- ========== HEADER ========== -->
+  <header class="site-header">
+    <div class="header-inner">
+      <h1 class="logo">
+        <span class="logo-icon" aria-hidden="true">📚</span>
+        Book &amp; Notes Vault
+      </h1>
+      <button
+        class="nav-toggle"
+        id="nav-toggle"
+        aria-expanded="false"
+        aria-controls="main-nav"
+        aria-label="Toggle navigation menu"
+      >
+        <span class="hamburger" aria-hidden="true"></span>
+      </button>
+      <nav id="main-nav" class="main-nav" aria-label="Main navigation">
+        <ul class="nav-list">
+          <li><a href="#about" class="nav-link active">About</a></li>
+          <li><a href="#dashboard" class="nav-link">Dashboard</a></li>
+          <li><a href="#records" class="nav-link">Records</a></li>
+          <li><a href="#add-form" class="nav-link">Add Book</a></li>
+          <li><a href="#settings" class="nav-link">Settings</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ========== MAIN CONTENT ========== -->
+  <main id="main-content">
+
+    <!-- Status / ARIA live region for global announcements -->
+    <div id="status-message" class="sr-only" role="status" aria-live="polite"></div>
+
+    <!-- ===== ABOUT SECTION ===== -->
+    <section id="about" class="section section--about">
+      <div class="container">
+        <h2 class="section-title">About</h2>
+        <div class="about-content">
+          <p>
+            <strong>Book &amp; Notes Vault</strong> is a personal book catalog that helps you
+            track your reading. Add books, tag them by genre, monitor your progress, and
+            search your collection using powerful regex patterns.
+          </p>
+          <div class="about-contact">
+            <h3>Contact</h3>
+            <ul class="contact-list">
+              <li>
+                <a href="https://github.com/ehabimfura" target="_blank" rel="noopener noreferrer">
+                  GitHub
+                </a>
+              </li>
+              <li>
+                <a href="mailto:student@example.com">Email</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== DASHBOARD SECTION ===== -->
+    <section id="dashboard" class="section section--dashboard">
+      <div class="container">
+        <h2 class="section-title">Dashboard</h2>
+
+        <!-- Stats Cards -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <span class="stat-label">Total Books</span>
+            <span class="stat-value" id="stat-total-books">0</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">Total Pages</span>
+            <span class="stat-value" id="stat-total-pages">0</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">Top Tag</span>
+            <span class="stat-value" id="stat-top-tag">—</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">Target</span>
+            <div class="stat-target">
+              <span class="stat-value" id="stat-target-progress">0 / 0</span>
+              <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                <div class="progress-fill" id="target-progress-fill"></div>
+              </div>
+            </div>
+            <!-- ARIA live for cap/target -->
+            <span id="target-live" class="sr-only" aria-live="polite"></span>
+          </div>
+        </div>
+
+        <!-- 7-Day Trend Chart -->
+        <div class="trend-chart-wrapper">
+          <h3>Last 7 Days</h3>
+          <div class="trend-chart" id="trend-chart" role="img" aria-label="Bar chart showing books added over the last 7 days">
+            <!-- Bars injected by JS -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== RECORDS SECTION ===== -->
+    <section id="records" class="section section--records">
+      <div class="container">
+        <h2 class="section-title">Records</h2>
+
+        <!-- Search Bar -->
+        <div class="search-bar">
+          <div class="search-input-group">
+            <label for="search-input" class="sr-only">Search with regex</label>
+            <input
+              type="text"
+              id="search-input"
+              class="search-input"
+              placeholder="Search (regex supported)…"
+              autocomplete="off"
+              aria-describedby="search-feedback"
+            />
+            <button
+              type="button"
+              id="case-toggle"
+              class="btn btn--icon"
+              aria-pressed="false"
+              aria-label="Toggle case-insensitive search"
+              title="Toggle case-insensitive"
+            >Aa</button>
+          </div>
+          <span id="search-feedback" class="search-feedback" role="status" aria-live="polite"></span>
+        </div>
+
+        <!-- Sort Controls -->
+        <div class="sort-controls" role="group" aria-label="Sort records">
+          <span class="sort-label">Sort by:</span>
+          <button type="button" class="btn btn--sort active" data-sort="dateAdded" aria-label="Sort by date added, descending">
+            Date <span class="sort-arrow" aria-hidden="true">▼</span>
+          </button>
+          <button type="button" class="btn btn--sort" data-sort="title" aria-label="Sort by title">
+            Title <span class="sort-arrow" aria-hidden="true"></span>
+          </button>
+          <button type="button" class="btn btn--sort" data-sort="pages" aria-label="Sort by pages">
+            Pages <span class="sort-arrow" aria-hidden="true"></span>
+          </button>
+        </div>
+
+        <!-- Records Table (desktop/tablet) -->
+        <div class="table-wrapper" role="region" aria-label="Book records table" tabindex="0">
+          <table class="records-table" id="records-table">
+            <thead>
+              <tr>
+                <th scope="col">Title</th>
+                <th scope="col">Author</th>
+                <th scope="col">Pages</th>
+                <th scope="col">Tag</th>
+                <th scope="col">Date Added</th>
+                <th scope="col">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="records-tbody">
+              <!-- Rows injected by JS -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Records Cards (mobile) -->
+        <div class="records-cards" id="records-cards" aria-label="Book records cards">
+          <!-- Cards injected by JS -->
+        </div>
+
+        <!-- Empty state -->
+        <div class="empty-state" id="empty-state" hidden>
+          <p>No books yet. <a href="#add-form">Add your first book!</a></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== ADD / EDIT FORM SECTION ===== -->
+    <section id="add-form" class="section section--form">
+      <div class="container">
+        <h2 class="section-title" id="form-heading">Add Book</h2>
+
+        <form id="book-form" class="book-form" novalidate>
+          <!-- Hidden field for edit mode -->
+          <input type="hidden" id="edit-id" value="" />
+
+          <div class="form-group">
+            <label for="field-title">Title <span class="required" aria-hidden="true">*</span></label>
+            <input
+              type="text"
+              id="field-title"
+              name="title"
+              required
+              aria-required="true"
+              aria-describedby="field-title-error"
+              maxlength="200"
+              autocomplete="off"
+            />
+            <span id="field-title-error" class="error-msg" role="alert"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="field-author">Author <span class="required" aria-hidden="true">*</span></label>
+            <input
+              type="text"
+              id="field-author"
+              name="author"
+              required
+              aria-required="true"
+              aria-describedby="field-author-error"
+              autocomplete="off"
+            />
+            <span id="field-author-error" class="error-msg" role="alert"></span>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group form-group--half">
+              <label for="field-pages">Pages <span class="required" aria-hidden="true">*</span></label>
+              <input
+                type="number"
+                id="field-pages"
+                name="pages"
+                required
+                aria-required="true"
+                aria-describedby="field-pages-error"
+                min="1"
+                autocomplete="off"
+              />
+              <span id="field-pages-error" class="error-msg" role="alert"></span>
+            </div>
+
+            <div class="form-group form-group--half">
+              <label for="field-tag">Tag <span class="required" aria-hidden="true">*</span></label>
+              <input
+                type="text"
+                id="field-tag"
+                name="tag"
+                required
+                aria-required="true"
+                aria-describedby="field-tag-error"
+                autocomplete="off"
+              />
+              <span id="field-tag-error" class="error-msg" role="alert"></span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="field-date">Date Added <span class="required" aria-hidden="true">*</span></label>
+            <input
+              type="date"
+              id="field-date"
+              name="dateAdded"
+              required
+              aria-required="true"
+              aria-describedby="field-date-error"
+            />
+            <span id="field-date-error" class="error-msg" role="alert"></span>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn btn--primary" id="form-submit">
+              Add Book
+            </button>
+            <button type="button" class="btn btn--secondary" id="form-cancel" hidden>
+              Cancel
+            </button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- ===== SETTINGS SECTION ===== -->
+    <section id="settings" class="section section--settings">
+      <div class="container">
+        <h2 class="section-title">Settings</h2>
+
+        <div class="settings-grid">
+          <!-- Reading Speed -->
+          <div class="settings-group">
+            <h3>Reading Speed</h3>
+            <div class="form-group">
+              <label for="setting-pages-per-hour">Pages per hour</label>
+              <input
+                type="number"
+                id="setting-pages-per-hour"
+                value="30"
+                min="1"
+                aria-describedby="setting-pph-desc"
+              />
+              <span id="setting-pph-desc" class="setting-desc">Used to estimate reading time</span>
+            </div>
+          </div>
+
+          <!-- Reading Target -->
+          <div class="settings-group">
+            <h3>Reading Target</h3>
+            <div class="form-group">
+              <label for="setting-target">Books this year</label>
+              <input
+                type="number"
+                id="setting-target"
+                value="50"
+                min="0"
+                aria-describedby="setting-target-desc"
+              />
+              <span id="setting-target-desc" class="setting-desc">Shown as progress on the dashboard</span>
+            </div>
+          </div>
+
+          <!-- Data Management -->
+          <div class="settings-group settings-group--data">
+            <h3>Data Management</h3>
+            <div class="data-actions">
+              <button type="button" class="btn btn--primary" id="btn-export">
+                ⬇ Export JSON
+              </button>
+              <div class="import-wrapper">
+                <label for="btn-import" class="btn btn--secondary">
+                  ⬆ Import JSON
+                </label>
+                <input
+                  type="file"
+                  id="btn-import"
+                  accept=".json"
+                  class="sr-only"
+                  aria-describedby="import-warning"
+                />
+              </div>
+            </div>
+            <p id="import-warning" class="setting-warning">
+              ⚠ Importing will replace all existing data.
+            </p>
+            <span id="import-status" role="status" aria-live="polite"></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ========== DELETE CONFIRMATION MODAL ========== -->
+  <div class="modal-overlay" id="delete-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" hidden>
+    <div class="modal">
+      <h2 id="modal-title">⚠ Delete Book</h2>
+      <p id="modal-message">Are you sure you want to delete this book?</p>
+      <p class="modal-warning">This action cannot be undone.</p>
+      <div class="modal-actions">
+        <button type="button" class="btn btn--secondary" id="modal-cancel">Cancel</button>
+        <button type="button" class="btn btn--danger" id="modal-confirm">🗑 Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="site-footer">
+    <div class="container">
+      <p>© 2025 Book &amp; Notes Vault</p>
+      <ul class="footer-links">
+        <li><a href="https://github.com/ehabimfura" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+        <li><a href="mailto:student@example.com">Email</a></li>
+      </ul>
+    </div>
+  </footer>
+
+  <!-- Scripts (ES modules) -->
+  <script type="module" src="scripts/app.js"></script>
+</body>
+</html>
