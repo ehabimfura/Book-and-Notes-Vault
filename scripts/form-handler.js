@@ -8,8 +8,9 @@
  */
 
 import { validateAll, validateTitle, validateAuthor, validatePages, validateTag, validateDate } from './validators.js';
+import { addBook, updateBook } from './state.js';
 
-/* ========== DOM References ========== */
+/* --- HTML Elements --- */
 const form = document.getElementById('book-form');
 const editIdInput = document.getElementById('edit-id');
 const formHeading = document.getElementById('form-heading');
@@ -33,7 +34,7 @@ const errorEls = {
     dateAdded: document.getElementById('field-date-error'),
 };
 
-/* Field→validator map for live validation */
+/* --- Checks for the fields --- */
 const fieldValidators = {
     title: validateTitle,
     author: validateAuthor,
@@ -42,17 +43,12 @@ const fieldValidators = {
     dateAdded: validateDate,
 };
 
-/* ========== Custom Event: book-saved ========== */
-// Other modules listen for this event to refresh renders, stats, persistence
+/* --- Event name for when a book is saved --- */
 const BOOK_SAVED_EVENT = 'book-saved';
 
-/* ========== Helpers ========== */
+/* --- Helper functions --- */
 
-/**
- * Show/clear a single field error.
- * @param {string} fieldName
- * @param {string} message  — empty string to clear
- */
+/** Show or hide an error message for a field */
 function setFieldError(fieldName, message) {
     const input = fields[fieldName];
     const errorEl = errorEls[fieldName];
@@ -69,19 +65,20 @@ function setFieldError(fieldName, message) {
     }
 }
 
-/** Clear all field errors. */
+/** Hide all error messages */
 function clearAllErrors() {
     for (const name of Object.keys(fields)) {
         setFieldError(name, '');
     }
 }
 
-/** Announce a status message to screen readers. */
+/** Post a message for screen readers */
 function announce(text) {
     if (statusMsg) {
         statusMsg.textContent = text;
     }
 }
+
 
 /** Read all form field values. */
 function readFormData() {
@@ -104,21 +101,6 @@ function resetForm() {
     clearAllErrors();
 }
 
-/* ========== In-memory store reference ========== */
-// We keep a module-level reference so getBooks/setBooks can be
-// injected from the main app. Default to a simple array.
-let _books = [];
-
-/** Replace the module-level book list. Called by app.js on init. */
-export function setBooks(books) {
-    _books = books;
-}
-
-/** Get current book list. */
-export function getBooks() {
-    return _books;
-}
-
 /* ========== Core: Submit Handler ========== */
 
 function handleSubmit(e) {
@@ -129,16 +111,16 @@ function handleSubmit(e) {
     const { valid, errors } = validateAll(data);
 
     if (!valid) {
-        // Show per-field error messages
+        // Show errors
         for (const [field, msg] of Object.entries(errors)) {
             setFieldError(field, msg);
         }
-        // Focus the first invalid field
+        // Focus the first error
         const firstInvalid = Object.keys(errors)[0];
         if (firstInvalid && fields[firstInvalid]) {
             fields[firstInvalid].focus();
         }
-        announce('Form contains errors. Please correct them and try again.');
+        announce('The form has errors. Please fix them.');
         return;
     }
 
@@ -146,24 +128,21 @@ function handleSubmit(e) {
     const editId = editIdInput.value;
 
     if (editId) {
-        // ——— Edit mode ———
-        const idx = _books.findIndex((b) => b.id === editId);
-        if (idx !== -1) {
-            _books[idx] = {
-                ..._books[idx],
-                title: data.title,
-                author: data.author,
-                pages: parseInt(data.pages, 10),
-                tag: data.tag,
-                dateAdded: data.dateAdded,
-                updatedAt: now,
-            };
-            announce(`"${data.title}" has been updated.`);
-        }
+        // Change an old book
+        updateBook(editId, {
+            title: data.title,
+            author: data.author,
+            pages: parseInt(data.pages, 10),
+            tag: data.tag,
+            dateAdded: data.dateAdded,
+            updatedAt: now,
+        });
+        announce(`"${data.title}" was updated.`);
     } else {
-        // ——— Add mode ———
-        const newBook = {
-            id: 'book_' + Date.now(),
+        // Add a new book
+        const id = 'book_' + Date.now();
+        addBook({
+            id: id,
             title: data.title,
             author: data.author,
             pages: parseInt(data.pages, 10),
@@ -171,16 +150,16 @@ function handleSubmit(e) {
             dateAdded: data.dateAdded,
             createdAt: now,
             updatedAt: now,
-        };
-        _books.push(newBook);
-        announce(`"${data.title}" has been added.`);
+        });
+        announce(`"${data.title}" was added.`);
     }
 
     resetForm();
 
-    // Dispatch custom event so other modules update
-    document.dispatchEvent(new CustomEvent(BOOK_SAVED_EVENT, { detail: { books: _books } }));
+    // Tell the rest of the app that a book was saved
+    document.dispatchEvent(new CustomEvent(BOOK_SAVED_EVENT));
 }
+
 
 /* ========== Edit Mode ========== */
 
