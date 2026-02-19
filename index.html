@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Book &amp; Notes Vault — A personal catalog to track books, pages, tags, and reading notes with search, sorting, and stats." />
+  <meta name="description"
+    content="Book &amp; Notes Vault — A personal catalog to track books, pages, tags, and reading notes with search, sorting, and stats." />
   <title>Book &amp; Notes Vault</title>
   <link rel="stylesheet" href="styles/main.css" />
   <link rel="stylesheet" href="styles/components.css" />
   <link rel="stylesheet" href="styles/responsive.css" />
 </head>
+
 <body>
 
   <!-- Skip Link -->
@@ -21,13 +24,8 @@
         <span class="logo-icon" aria-hidden="true">📚</span>
         Book &amp; Notes Vault
       </h1>
-      <button
-        class="nav-toggle"
-        id="nav-toggle"
-        aria-expanded="false"
-        aria-controls="main-nav"
-        aria-label="Toggle navigation menu"
-      >
+      <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="main-nav"
+        aria-label="Toggle navigation menu">
         <span class="hamburger" aria-hidden="true"></span>
       </button>
       <nav id="main-nav" class="main-nav" aria-label="Main navigation">
@@ -110,7 +108,8 @@
         <!-- 7-Day Trend Chart -->
         <div class="trend-chart-wrapper">
           <h3>Last 7 Days</h3>
-          <div class="trend-chart" id="trend-chart" role="img" aria-label="Bar chart showing books added over the last 7 days">
+          <div class="trend-chart" id="trend-chart" role="img"
+            aria-label="Bar chart showing books added over the last 7 days">
             <!-- Bars injected by JS -->
           </div>
         </div>
@@ -126,22 +125,10 @@
         <div class="search-bar">
           <div class="search-input-group">
             <label for="search-input" class="sr-only">Search with regex</label>
-            <input
-              type="text"
-              id="search-input"
-              class="search-input"
-              placeholder="Search (regex supported)…"
-              autocomplete="off"
-              aria-describedby="search-feedback"
-            />
-            <button
-              type="button"
-              id="case-toggle"
-              class="btn btn--icon"
-              aria-pressed="false"
-              aria-label="Toggle case-insensitive search"
-              title="Toggle case-insensitive"
-            >Aa</button>
+            <input type="text" id="search-input" class="search-input" placeholder="Search (regex supported)…"
+              autocomplete="off" aria-describedby="search-feedback" />
+            <button type="button" id="case-toggle" class="btn btn--icon" aria-pressed="false"
+              aria-label="Toggle case-insensitive search" title="Toggle case-insensitive">Aa</button>
           </div>
           <span id="search-feedback" class="search-feedback" role="status" aria-live="polite"></span>
         </div>
@@ -149,7 +136,8 @@
         <!-- Sort Controls -->
         <div class="sort-controls" role="group" aria-label="Sort records">
           <span class="sort-label">Sort by:</span>
-          <button type="button" class="btn btn--sort active" data-sort="dateAdded" aria-label="Sort by date added, descending">
+          <button type="button" class="btn btn--sort active" data-sort="dateAdded"
+            aria-label="Sort by date added, descending">
             Date <span class="sort-arrow" aria-hidden="true">▼</span>
           </button>
           <button type="button" class="btn btn--sort" data-sort="title" aria-label="Sort by title">
@@ -202,74 +190,38 @@
 
           <div class="form-group">
             <label for="field-title">Title <span class="required" aria-hidden="true">*</span></label>
-            <input
-              type="text"
-              id="field-title"
-              name="title"
-              required
-              aria-required="true"
-              aria-describedby="field-title-error"
-              maxlength="200"
-              autocomplete="off"
-            />
+            <input type="text" id="field-title" name="title" required aria-required="true"
+              aria-describedby="field-title-error" maxlength="200" autocomplete="off" />
             <span id="field-title-error" class="error-msg" role="alert"></span>
           </div>
 
           <div class="form-group">
             <label for="field-author">Author <span class="required" aria-hidden="true">*</span></label>
-            <input
-              type="text"
-              id="field-author"
-              name="author"
-              required
-              aria-required="true"
-              aria-describedby="field-author-error"
-              autocomplete="off"
-            />
+            <input type="text" id="field-author" name="author" required aria-required="true"
+              aria-describedby="field-author-error" autocomplete="off" />
             <span id="field-author-error" class="error-msg" role="alert"></span>
           </div>
 
           <div class="form-row">
             <div class="form-group form-group--half">
               <label for="field-pages">Pages <span class="required" aria-hidden="true">*</span></label>
-              <input
-                type="number"
-                id="field-pages"
-                name="pages"
-                required
-                aria-required="true"
-                aria-describedby="field-pages-error"
-                min="1"
-                autocomplete="off"
-              />
+              <input type="number" id="field-pages" name="pages" required aria-required="true"
+                aria-describedby="field-pages-error" min="1" autocomplete="off" />
               <span id="field-pages-error" class="error-msg" role="alert"></span>
             </div>
 
             <div class="form-group form-group--half">
               <label for="field-tag">Tag <span class="required" aria-hidden="true">*</span></label>
-              <input
-                type="text"
-                id="field-tag"
-                name="tag"
-                required
-                aria-required="true"
-                aria-describedby="field-tag-error"
-                autocomplete="off"
-              />
+              <input type="text" id="field-tag" name="tag" required aria-required="true"
+                aria-describedby="field-tag-error" autocomplete="off" />
               <span id="field-tag-error" class="error-msg" role="alert"></span>
             </div>
           </div>
 
           <div class="form-group">
             <label for="field-date">Date Added <span class="required" aria-hidden="true">*</span></label>
-            <input
-              type="date"
-              id="field-date"
-              name="dateAdded"
-              required
-              aria-required="true"
-              aria-describedby="field-date-error"
-            />
+            <input type="date" id="field-date" name="dateAdded" required aria-required="true"
+              aria-describedby="field-date-error" />
             <span id="field-date-error" class="error-msg" role="alert"></span>
           </div>
 
@@ -296,13 +248,7 @@
             <h3>Reading Speed</h3>
             <div class="form-group">
               <label for="setting-pages-per-hour">Pages per hour</label>
-              <input
-                type="number"
-                id="setting-pages-per-hour"
-                value="30"
-                min="1"
-                aria-describedby="setting-pph-desc"
-              />
+              <input type="number" id="setting-pages-per-hour" value="30" min="1" aria-describedby="setting-pph-desc" />
               <span id="setting-pph-desc" class="setting-desc">Used to estimate reading time</span>
             </div>
           </div>
@@ -312,13 +258,7 @@
             <h3>Reading Target</h3>
             <div class="form-group">
               <label for="setting-target">Books this year</label>
-              <input
-                type="number"
-                id="setting-target"
-                value="50"
-                min="0"
-                aria-describedby="setting-target-desc"
-              />
+              <input type="number" id="setting-target" value="50" min="0" aria-describedby="setting-target-desc" />
               <span id="setting-target-desc" class="setting-desc">Shown as progress on the dashboard</span>
             </div>
           </div>
@@ -334,13 +274,7 @@
                 <label for="btn-import" class="btn btn--secondary">
                   ⬆ Import JSON
                 </label>
-                <input
-                  type="file"
-                  id="btn-import"
-                  accept=".json"
-                  class="sr-only"
-                  aria-describedby="import-warning"
-                />
+                <input type="file" id="btn-import" accept=".json" class="sr-only" aria-describedby="import-warning" />
               </div>
             </div>
             <p id="import-warning" class="setting-warning">
@@ -374,11 +308,14 @@
       <ul class="footer-links">
         <li><a href="https://github.com/ehabimfura" target="_blank" rel="noopener noreferrer">GitHub</a></li>
         <li><a href="mailto:student@example.com">Email</a></li>
+        <li><a href="scraping.html">Book Scraper</a></li>
       </ul>
+
     </div>
   </footer>
 
   <!-- Scripts (ES modules) -->
   <script type="module" src="scripts/app.js"></script>
 </body>
+
 </html>

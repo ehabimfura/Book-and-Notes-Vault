@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Book Scraper — Book & Notes Vault</title>
+    <link rel="stylesheet" href="styles/main.css" />
+    <link rel="stylesheet" href="styles/components.css" />
+    <style>
+        .scraping-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .html-input {
+            width: 100%;
+            height: 200px;
+            font-family: monospace;
+            margin-bottom: 1rem;
+        }
+
+        .results-list {
+            margin-top: 2rem;
+        }
+
+        .scraped-item {
+            border: 1px solid #ddd;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .scraped-info h4 {
+            margin: 0;
+        }
+
+        .scraped-info p {
+            margin: 0.25rem 0 0;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .nav-back {
+            margin-bottom: 2rem;
+            display: inline-block;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="scraping-container">
+        <a href="index.html" class="nav-back">← Back to Vault</a>
+        <h1>Web Scraper (Stretch Goal)</h1>
+        <p>Paste HTML here to find books. We look for &lt;h3&gt; for titles and .author for names.</p>
+
+        <textarea id="html-source" class="html-input" placeholder="Paste HTML here..."></textarea>
+        <button id="btn-scrape" class="btn btn--primary">Find Books</button>
+
+        <div id="scraping-results" class="results-list">
+            <!-- Results showed here -->
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script type="module" src="scripts/scraping.js"></script>
+</body>
+
+</html>
