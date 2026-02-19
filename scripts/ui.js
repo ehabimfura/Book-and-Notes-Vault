@@ -28,33 +28,54 @@ export function renderRecords(books, query, isCaseSensitive, onEdit, onDelete) {
   emptyState.hidden = true;
 
   books.forEach(book => {
+    const bookTitle = highlightText(book.title, query, isCaseSensitive);
+    const bookAuthor = highlightText(book.author, query, isCaseSensitive);
+    const bookTag = highlightText(book.tag, query, isCaseSensitive);
+    const imageHtml = book.image
+      ? `<img src="${book.image}" alt="Cover of ${book.title}" class="book-cover-mini" />`
+      : `<button class="btn btn--small btn--add-img" data-id="${book.id}">+ Image</button>`;
+
     // Table Row
     const tr = document.createElement('tr');
     tr.innerHTML = `
-      <td>${highlightText(book.title, query, isCaseSensitive)}</td>
-      <td>${highlightText(book.author, query, isCaseSensitive)}</td>
+      <td>
+        <div class="title-with-image">
+          ${imageHtml}
+          <span>${bookTitle}</span>
+        </div>
+      </td>
+      <td>${bookAuthor}</td>
       <td>${book.pages}</td>
-      <td>${highlightText(book.tag, query, isCaseSensitive)}</td>
+      <td>${bookTag}</td>
       <td>${book.dateAdded}</td>
       <td>
-        <button class="btn btn--small btn--edit" data-id="${book.id}">Edit</button>
-        <button class="btn btn--small btn--danger" data-id="${book.id}">Delete</button>
+        <div class="action-buttons">
+          <button class="btn btn--small btn--edit" data-id="${book.id}">Edit</button>
+          <button class="btn btn--small btn--danger" data-id="${book.id}">Delete</button>
+        </div>
       </td>
     `;
 
     tr.querySelector('.btn--edit').onclick = () => onEdit(book);
     tr.querySelector('.btn--danger').onclick = () => onDelete(book.id);
+    const addImgBtnTr = tr.querySelector('.btn--add-img');
+    if (addImgBtnTr) addImgBtnTr.onclick = () => onEdit(book); // Reuse edit to add image
+
     tbody.appendChild(tr);
 
     // Card (for mobile)
     const card = document.createElement('div');
     card.className = 'record-card';
     card.innerHTML = `
-      <h3>${highlightText(book.title, query, isCaseSensitive)}</h3>
-      <p><strong>Author:</strong> ${highlightText(book.author, query, isCaseSensitive)}</p>
+      <div class="card-header">
+        ${book.image ? `<img src="${book.image}" alt="Cover" class="book-cover-card" />` : ''}
+        <h3>${bookTitle}</h3>
+      </div>
+      <p><strong>Author:</strong> ${bookAuthor}</p>
       <p><strong>Pages:</strong> ${book.pages}</p>
-      <p><strong>Tag:</strong> ${highlightText(book.tag, query, isCaseSensitive)}</p>
+      <p><strong>Tag:</strong> ${bookTag}</p>
       <p><strong>Date:</strong> ${book.dateAdded}</p>
+      ${!book.image ? `<button class="btn btn--secondary btn--small btn--add-img-card" style="margin-bottom:1rem">+ Add Image</button>` : ''}
       <div class="card-actions">
         <button class="btn btn--small btn--edit" data-id="${book.id}">Edit</button>
         <button class="btn btn--small btn--danger" data-id="${book.id}">Delete</button>
@@ -62,8 +83,12 @@ export function renderRecords(books, query, isCaseSensitive, onEdit, onDelete) {
     `;
     card.querySelector('.btn--edit').onclick = () => onEdit(book);
     card.querySelector('.btn--danger').onclick = () => onDelete(book.id);
+    const addImgBtnCard = card.querySelector('.btn--add-img-card');
+    if (addImgBtnCard) addImgBtnCard.onclick = () => onEdit(book);
+
     cardsContainer.appendChild(card);
   });
+
 }
 
 /** Update the numbers and chart on the dashboard */

@@ -98,5 +98,55 @@
     "dateAdded": "2025-11-01",
     "createdAt": "2025-11-01T13:00:00.000Z",
     "updatedAt": "2025-11-01T13:00:00.000Z"
+  },
+  {
+    "id": "book_0011",
+    "title": "The Hobbit",
+    "author": "J R R Tolkien",
+    "pages": 310,
+    "tag": "Fantasy",
+    "dateAdded": "2025-11-05",
+    "createdAt": "2025-11-05T09:30:00.000Z",
+    "updatedAt": "2025-11-05T09:30:00.000Z"
+  },
+  {
+    "id": "book_0012",
+    "title": "Foundations of Computer Science",
+    "author": "Alfred V Aho",
+    "pages": 786,
+    "tag": "Computer Science",
+    "dateAdded": "2025-11-10",
+    "createdAt": "2025-11-10T14:00:00.000Z",
+    "updatedAt": "2025-11-10T14:00:00.000Z"
+  },
+  {
+    "id": "book_0013",
+    "title": "Operating System Concepts",
+    "author": "Abraham Silberschatz",
+    "pages": 976,
+    "tag": "Computer Science",
+    "dateAdded": "2025-11-15",
+    "createdAt": "2025-11-15T11:20:00.000Z",
+    "updatedAt": "2025-11-15T11:20:00.000Z"
+  },
+  {
+    "id": "book_0014",
+    "title": "The Art of Computer Programming",
+    "author": "Donald Knuth",
+    "pages": 672,
+    "tag": "Computer Science",
+    "dateAdded": "2025-11-20",
+    "createdAt": "2025-11-20T16:45:00.000Z",
+    "updatedAt": "2025-11-20T16:45:00.000Z"
+  },
+  {
+    "id": "book_0015",
+    "title": "Modern Operating Systems",
+    "author": "Andrew S Tanenbaum",
+    "pages": 1136,
+    "tag": "Computer Science",
+    "dateAdded": "2025-11-25",
+    "createdAt": "2025-11-25T10:00:00.000Z",
+    "updatedAt": "2025-11-25T10:00:00.000Z"
   }
 ]

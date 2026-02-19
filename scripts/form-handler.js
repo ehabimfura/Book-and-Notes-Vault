@@ -24,7 +24,9 @@ const fields = {
     pages: document.getElementById('field-pages'),
     tag: document.getElementById('field-tag'),
     dateAdded: document.getElementById('field-date'),
+    image: document.getElementById('field-image'),
 };
+
 
 const errorEls = {
     title: document.getElementById('field-title-error'),
@@ -88,8 +90,11 @@ function readFormData() {
         pages: fields.pages.value,
         tag: fields.tag.value,
         dateAdded: fields.dateAdded.value,
+        imageFile: fields.image.files[0]
     };
 }
+
+
 
 /** Reset the form to "Add" mode. */
 function resetForm() {
@@ -99,7 +104,9 @@ function resetForm() {
     submitBtn.textContent = 'Add Book';
     cancelBtn.hidden = true;
     clearAllErrors();
+    // Clear preview if any (will add preview logic later if needed)
 }
+
 
 /* ========== Core: Submit Handler ========== */
 
@@ -127,38 +134,50 @@ function handleSubmit(e) {
     const now = new Date().toISOString();
     const editId = editIdInput.value;
 
-    if (editId) {
-        // Change an old book
-        updateBook(editId, {
-            title: data.title,
-            author: data.author,
-            pages: parseInt(data.pages, 10),
-            tag: data.tag,
-            dateAdded: data.dateAdded,
-            updatedAt: now,
-        });
-        announce(`"${data.title}" was updated.`);
+    /** Internal function to finalize saving */
+    const finalizeSave = (imageData) => {
+        if (editId) {
+            updateBook(editId, {
+                title: data.title,
+                author: data.author,
+                pages: parseInt(data.pages, 10),
+                tag: data.tag,
+                dateAdded: data.dateAdded,
+                updatedAt: now,
+                ...(imageData ? { image: imageData } : {})
+            });
+            announce(`"${data.title}" was updated.`);
+        } else {
+            const id = 'book_' + Date.now();
+            addBook({
+                id: id,
+                title: data.title,
+                author: data.author,
+                pages: parseInt(data.pages, 10),
+                tag: data.tag,
+                dateAdded: data.dateAdded,
+                createdAt: now,
+                updatedAt: now,
+                image: imageData || null
+            });
+            announce(`"${data.title}" was added.`);
+        }
+
+        resetForm();
+        document.dispatchEvent(new CustomEvent(BOOK_SAVED_EVENT));
+    };
+
+    // If an image was picked, read it first
+    if (data.imageFile) {
+        const reader = new FileReader();
+        reader.onload = (e) => finalizeSave(e.target.result);
+        reader.onerror = () => finalizeSave(null);
+        reader.readAsDataURL(data.imageFile);
     } else {
-        // Add a new book
-        const id = 'book_' + Date.now();
-        addBook({
-            id: id,
-            title: data.title,
-            author: data.author,
-            pages: parseInt(data.pages, 10),
-            tag: data.tag,
-            dateAdded: data.dateAdded,
-            createdAt: now,
-            updatedAt: now,
-        });
-        announce(`"${data.title}" was added.`);
+        finalizeSave(null);
     }
-
-    resetForm();
-
-    // Tell the rest of the app that a book was saved
-    document.dispatchEvent(new CustomEvent(BOOK_SAVED_EVENT));
 }
+
 
 
 /* ========== Edit Mode ========== */

@@ -30,12 +30,13 @@
       </button>
       <nav id="main-nav" class="main-nav" aria-label="Main navigation">
         <ul class="nav-list">
-          <li><a href="#about" class="nav-link active">About</a></li>
           <li><a href="#dashboard" class="nav-link">Dashboard</a></li>
           <li><a href="#records" class="nav-link">Records</a></li>
           <li><a href="#add-form" class="nav-link">Add Book</a></li>
+          <li><a href="#about" class="nav-link">About</a></li>
           <li><a href="#settings" class="nav-link">Settings</a></li>
         </ul>
+
       </nav>
     </div>
   </header>
@@ -46,32 +47,22 @@
     <!-- Status / ARIA live region for global announcements -->
     <div id="status-message" class="sr-only" role="status" aria-live="polite"></div>
 
-    <!-- ===== ABOUT SECTION ===== -->
-    <section id="about" class="section section--about">
+    <!-- Search Bar (Moved to top) -->
+    <div class="search-bar-top">
       <div class="container">
-        <h2 class="section-title">About</h2>
-        <div class="about-content">
-          <p>
-            <strong>Book &amp; Notes Vault</strong> is a personal book catalog that helps you
-            track your reading. Add books, tag them by genre, monitor your progress, and
-            search your collection using powerful regex patterns.
-          </p>
-          <div class="about-contact">
-            <h3>Contact</h3>
-            <ul class="contact-list">
-              <li>
-                <a href="https://github.com/ehabimfura" target="_blank" rel="noopener noreferrer">
-                  GitHub
-                </a>
-              </li>
-              <li>
-                <a href="mailto:student@example.com">Email</a>
-              </li>
-            </ul>
+        <div class="search-bar">
+          <div class="search-input-group">
+            <label for="search-input" class="sr-only">Search with regex</label>
+            <input type="text" id="search-input" class="search-input" placeholder="Search (regex supported)…"
+              autocomplete="off" aria-describedby="search-feedback" />
+            <button type="button" id="case-toggle" class="btn btn--icon" aria-pressed="false"
+              aria-label="Toggle case-insensitive search" title="Toggle case-insensitive">Aa</button>
           </div>
+          <span id="search-feedback" class="search-feedback" role="status" aria-live="polite"></span>
         </div>
       </div>
-    </section>
+    </div>
+
 
     <!-- ===== DASHBOARD SECTION ===== -->
     <section id="dashboard" class="section section--dashboard">
@@ -121,17 +112,8 @@
       <div class="container">
         <h2 class="section-title">Records</h2>
 
-        <!-- Search Bar -->
-        <div class="search-bar">
-          <div class="search-input-group">
-            <label for="search-input" class="sr-only">Search with regex</label>
-            <input type="text" id="search-input" class="search-input" placeholder="Search (regex supported)…"
-              autocomplete="off" aria-describedby="search-feedback" />
-            <button type="button" id="case-toggle" class="btn btn--icon" aria-pressed="false"
-              aria-label="Toggle case-insensitive search" title="Toggle case-insensitive">Aa</button>
-          </div>
-          <span id="search-feedback" class="search-feedback" role="status" aria-live="polite"></span>
-        </div>
+        <!-- Search Bar Removed from here -->
+
 
         <!-- Sort Controls -->
         <div class="sort-controls" role="group" aria-label="Sort records">
@@ -225,6 +207,13 @@
             <span id="field-date-error" class="error-msg" role="alert"></span>
           </div>
 
+          <div class="form-group">
+            <label for="field-image">Book Cover Image</label>
+            <input type="file" id="field-image" accept="image/*" />
+            <span class="setting-desc">Optional. Choose an image for the book cover.</span>
+          </div>
+
+
           <div class="form-actions">
             <button type="submit" class="btn btn--primary" id="form-submit">
               Add Book
@@ -237,8 +226,36 @@
       </div>
     </section>
 
+    <!-- ===== ABOUT SECTION ===== -->
+    <section id="about" class="section section--about">
+      <div class="container">
+        <h2 class="section-title">About</h2>
+        <div class="about-content">
+          <p>
+            <strong>Book &amp; Notes Vault</strong> is a personal book catalog that helps you
+            track your reading. Add books, tag them by genre, monitor your progress, and
+            search your collection using powerful regex patterns.
+          </p>
+          <div class="about-contact">
+            <h3>Contact</h3>
+            <ul class="contact-list">
+              <li>
+                <a href="https://github.com/ehabimfura" target="_blank" rel="noopener noreferrer">
+                  GitHub
+                </a>
+              </li>
+              <li>
+                <a href="mailto:student@example.com">Email</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- ===== SETTINGS SECTION ===== -->
     <section id="settings" class="section section--settings">
+
       <div class="container">
         <h2 class="section-title">Settings</h2>
 
