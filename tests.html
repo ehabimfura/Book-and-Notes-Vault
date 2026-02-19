@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Book &amp; Notes Vault — Validation Tests</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&display=swap');
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Source Sans Pro', system-ui, sans-serif;
+            background: #e8edf2;
+            color: #333;
+            padding: 2rem;
+            line-height: 1.6;
+        }
+
+        h1 {
+            font-size: 1.75rem;
+            color: #1a5276;
+            margin-bottom: 0.5rem;
+        }
+
+        .summary {
+            font-size: 1.125rem;
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+
+        .summary.pass {
+            background: #d4edda;
+            color: #155724;
+            border-left: 4px solid #27855a;
+        }
+
+        .summary.fail {
+            background: #f8d7da;
+            color: #721c24;
+            border-left: 4px solid #c0392b;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #fff;
+            border: 1px solid #d4dbe4;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        th {
+            background: #3d7a9e;
+            color: #fff;
+            text-align: left;
+            padding: 0.75rem 1rem;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        td {
+            padding: 0.625rem 1rem;
+            border-bottom: 1px solid #e2e7ed;
+            font-size: 0.875rem;
+            vertical-align: top;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover {
+            background: #f4f6f9;
+        }
+
+        .pass-icon {
+            color: #27855a;
+            font-weight: 700;
+        }
+
+        .fail-icon {
+            color: #c0392b;
+            font-weight: 700;
+        }
+
+        .rule-tag {
+            display: inline-block;
+            background: #f4f6f9;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            border: 1px solid #d4dbe4;
+            font-style: italic;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>📚 Validation Test Suite</h1>
+    <div id="summary" class="summary"></div>
+    <table>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Result</th>
+                <th>Rule</th>
+                <th>Input</th>
+                <th>Expected</th>
+                <th>Got</th>
+            </tr>
+        </thead>
+        <tbody id="results"></tbody>
+    </table>
+
+    <script type="module">
+        import {
+            validateTitle,
+            validateAuthor,
+            validatePages,
+            validateTag,
+            validateDate,
+            validateAll,
+            PATTERNS,
+        } from './scripts/validators.js';
+
+        /* ========== Tiny assertion framework ========== */
+        const results = [];
+
+        function assert(description, rule, input, expected, actual) {
+            const passed = expected === actual;
+            results.push({ description, rule, input, expected, actual, passed });
+        }
+
+        /* ===================================================
+           TEST CASES
+           =================================================== */
+
+        // ——— TITLE: required ———
+        assert('Empty title → invalid',
+            'required', '""', false, validateTitle('').valid);
+
+        assert('Valid short title → valid',
+            'required', '"Algorithms"', true, validateTitle('Algorithms').valid);
+
+        // ——— TITLE: Regex 1 — no leading/trailing whitespace ———
+        assert('Leading space in title → invalid',
+            'Regex 1: trim', '" Hello"', false, validateTitle(' Hello').valid);
+
+        assert('Trailing space in title → invalid',
+            'Regex 1: trim', '"Hello "', false, validateTitle('Hello ').valid);
+
+        assert('Clean title → valid',
+            'Regex 1: trim', '"Hello World"', true, validateTitle('Hello World').valid);
+
+        // ——— TITLE: Regex 2 — duplicate consecutive words (advanced back-ref) ———
+        assert('Duplicate words "the the" → invalid',
+            'Regex 2: dupe (back-ref)', '"the the book"', false, validateTitle('the the book').valid);
+
+        assert('Duplicate words "very very" → invalid',
+            'Regex 2: dupe (back-ref)', '"A very very long title"', false, validateTitle('A very very long title').valid);
+
+        assert('No duplicate → valid',
+            'Regex 2: dupe (back-ref)', '"A very long title"', true, validateTitle('A very long title').valid);
+
+        // ——— TITLE: length ———
+        assert('Title over 200 chars → invalid',
+            'length ≤ 200', '"A".repeat(201)', false, validateTitle('A'.repeat(201)).valid);
+
+        assert('Title exactly 200 chars → valid',
+            'length ≤ 200', '"A".repeat(200)', true, validateTitle('A'.repeat(200)).valid);
+
+        // ——— AUTHOR: Regex 3 — letters, spaces, hyphens ———
+        assert('Valid author "Harper Lee" → valid',
+            'Regex 3: name', '"Harper Lee"', true, validateAuthor('Harper Lee').valid);
+
+        assert('Author with hyphen "J-K Rowling" → valid',
+            'Regex 3: name', '"J-K Rowling"', true, validateAuthor('J-K Rowling').valid);
+
+        assert('Author with number "Author1" → invalid',
+            'Regex 3: name', '"Author1"', false, validateAuthor('Author1').valid);
+
+        assert('Author with special char "O\'Brien" → invalid',
+            'Regex 3: name', '"O\'Brien"', false, validateAuthor("O'Brien").valid);
+
+        assert('Empty author → invalid',
+            'required', '""', false, validateAuthor('').valid);
+
+        // ——— PAGES: Regex 4 — positive integer ———
+        assert('Pages "250" → valid',
+            'Regex 4: pages', '"250"', true, validatePages('250').valid);
+
+        assert('Pages "0" → invalid',
+            'Regex 4: pages', '"0"', false, validatePages('0').valid);
+
+        assert('Pages "-5" → invalid',
+            'Regex 4: pages', '"-5"', false, validatePages('-5').valid);
+
+        assert('Pages "3.14" → invalid',
+            'Regex 4: pages', '"3.14"', false, validatePages('3.14').valid);
+
+        assert('Pages "" → invalid',
+            'required', '""', false, validatePages('').valid);
+
+        // ——— TAG: Regex 3 — letters, spaces, hyphens ———
+        assert('Tag "Computer Science" → valid',
+            'Regex 3: name', '"Computer Science"', true, validateTag('Computer Science').valid);
+
+        assert('Tag "Sci-Fi" → valid',
+            'Regex 3: name', '"Sci-Fi"', true, validateTag('Sci-Fi').valid);
+
+        assert('Tag with number "Tag2" → invalid',
+            'Regex 3: name', '"Tag2"', false, validateTag('Tag2').valid);
+
+        assert('Empty tag → invalid',
+            'required', '""', false, validateTag('').valid);
+
+        // ——— DATE: Regex 5 — YYYY-MM-DD ———
+        assert('Date "2025-09-15" → valid',
+            'Regex 5: date', '"2025-09-15"', true, validateDate('2025-09-15').valid);
+
+        assert('Date "2025-13-01" (month 13) → invalid',
+            'Regex 5: date', '"2025-13-01"', false, validateDate('2025-13-01').valid);
+
+        assert('Date "2025-00-15" (month 00) → invalid',
+            'Regex 5: date', '"2025-00-15"', false, validateDate('2025-00-15').valid);
+
+        assert('Date "09-15-2025" (US format) → invalid',
+            'Regex 5: date', '"09-15-2025"', false, validateDate('09-15-2025').valid);
+
+        assert('Date "2025/09/15" (slashes) → invalid',
+            'Regex 5: date', '"2025/09/15"', false, validateDate('2025/09/15').valid);
+
+        assert('Empty date → invalid',
+            'required', '""', false, validateDate('').valid);
+
+        // ——— validateAll — batch ———
+        assert('validateAll: all valid → valid',
+            'validateAll', '{all fields valid}', true,
+            validateAll({
+                title: 'Clean Title',
+                author: 'Good Author',
+                pages: '100',
+                tag: 'Fiction',
+                dateAdded: '2025-01-15',
+            }).valid);
+
+        assert('validateAll: bad title → invalid',
+            'validateAll', '{title: " bad"}', false,
+            validateAll({
+                title: ' bad',
+                author: 'Good Author',
+                pages: '100',
+                tag: 'Fiction',
+                dateAdded: '2025-01-15',
+            }).valid);
+
+        // ——— Error message content check ———
+        assert('Duplicate word error message mentions "duplicate"',
+            'Regex 2: message', '"the the"', true,
+            validateTitle('the the').message.toLowerCase().includes('duplicate'));
+
+        assert('Author format error mentions "letters"',
+            'Regex 3: message', '"Bad123"', true,
+            validateAuthor('Bad123').message.toLowerCase().includes('letters'));
+
+        /* ===================================================
+           RENDER RESULTS
+           =================================================== */
+        const tbody = document.getElementById('results');
+        let passCount = 0;
+        let failCount = 0;
+
+        results.forEach((r, i) => {
+            if (r.passed) passCount++; else failCount++;
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+        <td>${i + 1}</td>
+        <td class="${r.passed ? 'pass-icon' : 'fail-icon'}">${r.passed ? '✅ PASS' : '❌ FAIL'}</td>
+        <td><span class="rule-tag">${r.rule}</span></td>
+        <td>${r.input}</td>
+        <td>${String(r.expected)}</td>
+        <td>${String(r.actual)}</td>
+      `;
+            tbody.appendChild(tr);
+        });
+
+        const summaryEl = document.getElementById('summary');
+        const allPassed = failCount === 0;
+        summaryEl.className = `summary ${allPassed ? 'pass' : 'fail'}`;
+        summaryEl.textContent = allPassed
+            ? `✅ All ${passCount} tests passed`
+            : `❌ ${failCount} of ${passCount + failCount} tests failed`;
+    </script>
+</body>
+
+</html>

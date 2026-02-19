@@ -1,8 +1,10 @@
 /**
  * app.js — Main entry point
- * Initialises navigation toggle and section handling.
- * Full feature modules will be added in later milestones.
+ * Initialises navigation toggle, form handler, and section handling.
+ * Feature modules imported as they become available across milestones.
  */
+
+import { initFormHandler } from './form-handler.js';
 
 /* ========== Navigation Toggle ========== */
 const navToggle = document.getElementById('nav-toggle');
@@ -53,7 +55,6 @@ updateActiveNav();
 /* ========== Close nav on Escape ========== */
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') {
-    // Close mobile nav if open
     if (navToggle && navToggle.getAttribute('aria-expanded') === 'true') {
       navToggle.setAttribute('aria-expanded', 'false');
       mainNav.classList.remove('is-open');
@@ -61,3 +62,6 @@ document.addEventListener('keydown', (e) => {
     }
   }
 });
+
+/* ========== Initialise Modules ========== */
+initFormHandler();
