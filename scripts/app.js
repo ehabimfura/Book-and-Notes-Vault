@@ -26,6 +26,7 @@ const importInput = document.getElementById('btn-import');
 const deleteModal = document.getElementById('delete-modal');
 const modalConfirm = document.getElementById('modal-confirm');
 const modalCancel = document.getElementById('modal-cancel');
+const targetLive = document.getElementById('target-live');
 let bookToDelete = null;
 
 /** Refresh the screen with latest data */
@@ -56,6 +57,13 @@ function refreshUI() {
 
   ui.renderRecords(filteredBooks, search.query, search.isCaseSensitive, handleEdit, askToDelete);
   ui.renderStats(books, settings);
+
+  // Check if reading target is reached
+  if (books.length >= settings.target && settings.target > 0) {
+    targetLive.textContent = "Great job! You reached your reading goal!";
+  } else {
+    targetLive.textContent = "";
+  }
 }
 
 /** Save data and update UI */
@@ -183,6 +191,23 @@ function initApp() {
 
 // Start the app
 initApp();
+
+/* --- Keyboard Shortcuts --- */
+document.addEventListener('keydown', (e) => {
+  // Alt + A: Add a book
+  if (e.altKey && e.key.toLowerCase() === 'a') {
+    e.preventDefault();
+    document.getElementById('add-form').scrollIntoView({ behavior: 'smooth' });
+    document.getElementById('field-title').focus();
+  }
+  // Alt + S: Search
+  if (e.altKey && e.key.toLowerCase() === 's') {
+    e.preventDefault();
+    document.getElementById('records').scrollIntoView({ behavior: 'smooth' });
+    searchInput.focus();
+  }
+});
+
 
 /* --- Old Navigation Code --- */
 const navToggle = document.getElementById('nav-toggle');

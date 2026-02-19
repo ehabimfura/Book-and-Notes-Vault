@@ -18,19 +18,19 @@ const trendChart = document.getElementById('trend-chart');
 
 /** Draw the list of books in the table and as cards */
 export function renderRecords(books, query, isCaseSensitive, onEdit, onDelete) {
-    tbody.innerHTML = '';
-    cardsContainer.innerHTML = '';
+  tbody.innerHTML = '';
+  cardsContainer.innerHTML = '';
 
-    if (books.length === 0) {
-        emptyState.hidden = false;
-        return;
-    }
-    emptyState.hidden = true;
+  if (books.length === 0) {
+    emptyState.hidden = false;
+    return;
+  }
+  emptyState.hidden = true;
 
-    books.forEach(book => {
-        // Table Row
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
+  books.forEach(book => {
+    // Table Row
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
       <td>${highlightText(book.title, query, isCaseSensitive)}</td>
       <td>${highlightText(book.author, query, isCaseSensitive)}</td>
       <td>${book.pages}</td>
@@ -42,14 +42,14 @@ export function renderRecords(books, query, isCaseSensitive, onEdit, onDelete) {
       </td>
     `;
 
-        tr.querySelector('.btn--edit').onclick = () => onEdit(book);
-        tr.querySelector('.btn--danger').onclick = () => onDelete(book.id);
-        tbody.appendChild(tr);
+    tr.querySelector('.btn--edit').onclick = () => onEdit(book);
+    tr.querySelector('.btn--danger').onclick = () => onDelete(book.id);
+    tbody.appendChild(tr);
 
-        // Card (for mobile)
-        const card = document.createElement('div');
-        card.className = 'record-card';
-        card.innerHTML = `
+    // Card (for mobile)
+    const card = document.createElement('div');
+    card.className = 'record-card';
+    card.innerHTML = `
       <h3>${highlightText(book.title, query, isCaseSensitive)}</h3>
       <p><strong>Author:</strong> ${highlightText(book.author, query, isCaseSensitive)}</p>
       <p><strong>Pages:</strong> ${book.pages}</p>
@@ -60,51 +60,57 @@ export function renderRecords(books, query, isCaseSensitive, onEdit, onDelete) {
         <button class="btn btn--small btn--danger" data-id="${book.id}">Delete</button>
       </div>
     `;
-        card.querySelector('.btn--edit').onclick = () => onEdit(book);
-        card.querySelector('.btn--danger').onclick = () => onDelete(book.id);
-        cardsContainer.appendChild(card);
-    });
+    card.querySelector('.btn--edit').onclick = () => onEdit(book);
+    card.querySelector('.btn--danger').onclick = () => onDelete(book.id);
+    cardsContainer.appendChild(card);
+  });
 }
 
 /** Update the numbers and chart on the dashboard */
 export function renderStats(books, settings) {
-    const totalBooks = books.length;
-    const totalPages = books.reduce((sum, b) => sum + b.pages, 0);
+  const totalBooks = books.length;
+  const totalPages = books.reduce((sum, b) => sum + b.pages, 0);
 
-    // Find top tag
-    const tags = {};
-    books.forEach(b => tags[b.tag] = (tags[b.tag] || 0) + 1);
-    const topTag = Object.entries(tags).sort((a, b) => b[1] - a[1])[0]?.[0] || '—';
+  // Find top tag
+  const tags = {};
+  books.forEach(b => tags[b.tag] = (tags[b.tag] || 0) + 1);
+  const topTag = Object.entries(tags).sort((a, b) => b[1] - a[1])[0]?.[0] || '—';
 
-    totalBooksEl.textContent = totalBooks;
-    totalPagesEl.textContent = totalPages;
-    topTagEl.textContent = topTag;
+  totalBooksEl.textContent = totalBooks;
 
-    // Progress bar
-    const target = settings.target || 0;
-    targetProgressEl.textContent = `${totalBooks} / ${target}`;
-    const percent = target > 0 ? Math.min((totalBooks / target) * 100, 100) : 0;
-    progressFill.style.width = `${percent}%`;
+  // Calculate reading time in hours
+  const speed = settings.pagesPerHour || 30;
+  const hours = Math.round(totalPages / speed);
+  totalPagesEl.textContent = `${totalPages} (${hours}h)`;
 
-    renderTrendChart(books);
+  topTagEl.textContent = topTag;
+
+
+  // Progress bar
+  const target = settings.target || 0;
+  targetProgressEl.textContent = `${totalBooks} / ${target}`;
+  const percent = target > 0 ? Math.min((totalBooks / target) * 100, 100) : 0;
+  progressFill.style.width = `${percent}%`;
+
+  renderTrendChart(books);
 }
 
 /** Draw a small bar chart for the last 7 days */
 function renderTrendChart(books) {
-    trendChart.innerHTML = '';
-    const now = new Date();
+  trendChart.innerHTML = '';
+  const now = new Date();
 
-    for (let i = 6; i >= 0; i--) {
-        const d = new Date();
-        d.setDate(now.getDate() - i);
-        const dateStr = d.toISOString().split('T')[0];
-        const count = books.filter(b => b.dateAdded === dateStr).length;
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date();
+    d.setDate(now.getDate() - i);
+    const dateStr = d.toISOString().split('T')[0];
+    const count = books.filter(b => b.dateAdded === dateStr).length;
 
-        const bar = document.createElement('div');
-        bar.className = 'trend-bar'; // Fix: Use 'trend-bar' class name
-        const height = count * 20; // Each book is 20 pixels high
-        bar.style.height = `${Math.max(height, 5)}px`;
-        bar.title = `${dateStr}: ${count} books`;
-        trendChart.appendChild(bar);
-    }
+    const bar = document.createElement('div');
+    bar.className = 'trend-bar'; // Fix: Use 'trend-bar' class name
+    const height = count * 20; // Each book is 20 pixels high
+    bar.style.height = `${Math.max(height, 5)}px`;
+    bar.title = `${dateStr}: ${count} books`;
+    trendChart.appendChild(bar);
+  }
 }
