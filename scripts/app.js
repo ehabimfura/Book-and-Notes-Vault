@@ -21,6 +21,9 @@ const targetInput = document.getElementById('setting-target');
 /* --- Elements for Data --- */
 const exportBtn = document.getElementById('btn-export');
 const importInput = document.getElementById('btn-import');
+const baseUnitInput = document.getElementById('setting-base-unit');
+const currencyInput = document.getElementById('setting-currency');
+
 
 /* --- Delete Modal Elements --- */
 const deleteModal = document.getElementById('delete-modal');
@@ -92,7 +95,15 @@ function initApp() {
   state.setBooks(savedBooks);
 
   const savedSettings = storage.loadSettings();
-  if (savedSettings) state.updateSettings(savedSettings);
+  if (savedSettings) {
+    state.updateSettings(savedSettings);
+    // Update UI inputs to match saved settings
+    pagesPerHourInput.value = state.getSettings().pagesPerHour;
+    targetInput.value = state.getSettings().target;
+    baseUnitInput.value = state.getSettings().baseUnit;
+    currencyInput.value = state.getSettings().currency;
+  }
+
 
   // Search input
   searchInput.addEventListener('input', () => {
@@ -145,6 +156,19 @@ function initApp() {
     storage.saveSettings(state.getSettings());
     refreshUI();
   });
+
+  baseUnitInput.addEventListener('change', () => {
+    state.updateSettings({ baseUnit: baseUnitInput.value });
+    storage.saveSettings(state.getSettings());
+    refreshUI();
+  });
+
+  currencyInput.addEventListener('change', () => {
+    state.updateSettings({ currency: currencyInput.value });
+    storage.saveSettings(state.getSettings());
+    refreshUI();
+  });
+
 
   // Export and Import
   exportBtn.addEventListener('click', () => {

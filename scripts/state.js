@@ -8,8 +8,11 @@ const DEFAULT_SETTINGS = {
     pagesPerHour: 30,
     target: 50,
     sortField: 'dateAdded',
-    sortDirection: 'desc'
+    sortDirection: 'desc',
+    baseUnit: 'pages',
+    currency: 'USD'
 };
+
 
 // Current data in memory
 let state = {

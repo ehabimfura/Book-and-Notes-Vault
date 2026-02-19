@@ -81,7 +81,13 @@ export function renderStats(books, settings) {
   // Calculate reading time in hours
   const speed = settings.pagesPerHour || 30;
   const hours = Math.round(totalPages / speed);
-  totalPagesEl.textContent = `${totalPages} (${hours}h)`;
+
+  if (settings.baseUnit === 'hours') {
+    totalPagesEl.textContent = `${hours}h (${totalPages} pages)`;
+  } else {
+    totalPagesEl.textContent = `${totalPages} (${hours}h)`;
+  }
+
 
   topTagEl.textContent = topTag;
 
