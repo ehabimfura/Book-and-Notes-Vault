@@ -2,6 +2,8 @@
 
 A personal, framework-free app to track your books, pages, tags, and reading notes.
 
+[**🌍 Live Site**](https://ehabimfura.github.io/Book-and-Notes-Vault/) | [**🎥 Watch Demo Video**](https://youtu.be/jwe4G3X1gKw)
+
 ## Features
 
 ### 1. Dashboard
