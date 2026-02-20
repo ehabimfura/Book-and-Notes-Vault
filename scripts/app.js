@@ -11,7 +11,8 @@ import { matchesSearch } from './search.js';
 
 /* --- Elements for Search and Sort --- */
 const searchInput = document.getElementById('search-input');
-const caseToggle = document.getElementById('case-toggle');
+const searchBtn = document.getElementById('btn-search-trigger');
+
 const sortButtons = document.querySelectorAll('.btn--sort');
 
 /* --- Elements for Settings --- */
@@ -22,7 +23,6 @@ const targetInput = document.getElementById('setting-target');
 const exportBtn = document.getElementById('btn-export');
 const importInput = document.getElementById('btn-import');
 const baseUnitInput = document.getElementById('setting-base-unit');
-const currencyInput = document.getElementById('setting-currency');
 
 
 /* --- Delete Modal Elements --- */
@@ -58,7 +58,8 @@ function refreshUI() {
     }
   });
 
-  ui.renderRecords(filteredBooks, search.query, search.isCaseSensitive, handleEdit, askToDelete);
+  ui.renderRecords(filteredBooks, search.query, search.isCaseSensitive, books.length, handleEdit, askToDelete);
+
   ui.renderStats(books, settings);
 
   // Check if reading target is reached
@@ -91,8 +92,26 @@ function askToDelete(id) {
 
 function initApp() {
   // Load data from browser
-  const savedBooks = storage.loadBooks();
-  state.setBooks(savedBooks);
+  let savedBooks = storage.loadBooks();
+
+  if (savedBooks.length === 0) {
+    // If no data, try to fetch from seed.json
+    fetch('seed.json')
+      .then(res => res.json())
+      .then(data => {
+        state.setBooks(data);
+        storage.saveBooks(data);
+        refreshUI();
+      })
+      .catch(err => {
+        console.warn('Could not load seed data:', err);
+        state.setBooks([]);
+        refreshUI();
+      });
+  } else {
+    state.setBooks(savedBooks);
+  }
+
 
   const savedSettings = storage.loadSettings();
   if (savedSettings) {
@@ -101,23 +120,66 @@ function initApp() {
     pagesPerHourInput.value = state.getSettings().pagesPerHour;
     targetInput.value = state.getSettings().target;
     baseUnitInput.value = state.getSettings().baseUnit;
-    currencyInput.value = state.getSettings().currency;
+
+    // Set initial label for reading speed
+    const pphLabel = document.getElementById('setting-pph-label');
+    if (pphLabel) {
+      if (state.getSettings().baseUnit === 'minutes') {
+        pphLabel.textContent = 'Pages per minute';
+      } else {
+        pphLabel.textContent = 'Pages per hour';
+      }
+    }
   }
 
 
-  // Search input
-  searchInput.addEventListener('input', () => {
-    state.updateSearch(searchInput.value, caseToggle.getAttribute('aria-pressed') === 'true');
+  /** Internal function to trigger search */
+  const triggerSearch = () => {
+    state.updateSearch(searchInput.value, false);
     refreshUI();
+
+    // Use a longer timeout and manual scroll to ensure the transition happens
+    setTimeout(() => {
+      const recordsSection = document.getElementById('records');
+      if (recordsSection) {
+        // Calculate the target position accounting for the sticky header
+        const headerHeight = document.querySelector('.site-header')?.offsetHeight || 70;
+        const targetTop = recordsSection.getBoundingClientRect().top + window.pageYOffset - headerHeight - 10;
+
+        window.scrollTo({
+          top: targetTop,
+          behavior: 'smooth'
+        });
+
+        // Update the URL hash to reflect the current section
+        if (window.location.hash !== '#records') {
+          history.pushState(null, null, '#records');
+        }
+      }
+    }, 150);
+
+
+
+  };
+
+
+  // Search input: filter only on Enter key
+  searchInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      triggerSearch();
+    }
   });
 
-  // Case sensitive button
-  caseToggle.addEventListener('click', () => {
-    const isPressed = caseToggle.getAttribute('aria-pressed') === 'true';
-    caseToggle.setAttribute('aria-pressed', !isPressed);
-    state.updateSearch(searchInput.value, !isPressed);
-    refreshUI();
+
+  // Search button click
+  searchBtn.addEventListener('click', () => {
+    triggerSearch();
   });
+
+
+
+
 
   // Sort buttons
   sortButtons.forEach(btn => {
@@ -160,12 +222,17 @@ function initApp() {
   baseUnitInput.addEventListener('change', () => {
     state.updateSettings({ baseUnit: baseUnitInput.value });
     storage.saveSettings(state.getSettings());
-    refreshUI();
-  });
 
-  currencyInput.addEventListener('change', () => {
-    state.updateSettings({ currency: currencyInput.value });
-    storage.saveSettings(state.getSettings());
+    // Update the label for reading speed based on the base unit
+    const pphLabel = document.getElementById('setting-pph-label');
+    if (pphLabel) {
+      if (baseUnitInput.value === 'minutes') {
+        pphLabel.textContent = 'Pages per minute';
+      } else {
+        pphLabel.textContent = 'Pages per hour';
+      }
+    }
+
     refreshUI();
   });
 
@@ -173,6 +240,10 @@ function initApp() {
   // Export and Import
   exportBtn.addEventListener('click', () => {
     storage.exportData(state.getBooks());
+    // Use a timeout for the alert so it doesn't block the download thread
+    setTimeout(() => {
+      alert('Data export initiated! Check your Downloads folder.');
+    }, 500);
   });
 
   importInput.addEventListener('change', async (e) => {

@@ -7,7 +7,8 @@
     "tag": "Computer Science",
     "dateAdded": "2025-09-15",
     "createdAt": "2025-09-15T10:30:00.000Z",
-    "updatedAt": "2025-09-15T10:30:00.000Z"
+    "updatedAt": "2025-09-15T10:30:00.000Z",
+    "cover_image": "https://covers.openlibrary.org/b/id/8225266-M.jpg"
   },
   {
     "id": "book_0002",
@@ -17,7 +18,8 @@
     "tag": "Fiction",
     "dateAdded": "2025-09-18",
     "createdAt": "2025-09-18T12:00:00.000Z",
-    "updatedAt": "2025-09-18T12:00:00.000Z"
+    "updatedAt": "2025-09-18T12:00:00.000Z",
+    "cover_image": "https://covers.openlibrary.org/b/id/12628464-M.jpg"
   },
   {
     "id": "book_0003",
@@ -27,7 +29,8 @@
     "tag": "Science",
     "dateAdded": "2025-09-20",
     "createdAt": "2025-09-20T15:45:00.000Z",
-    "updatedAt": "2025-09-20T15:45:00.000Z"
+    "updatedAt": "2025-09-20T15:45:00.000Z",
+    "cover_image": "https://covers.openlibrary.org/b/id/12513540-M.jpg"
   },
   {
     "id": "book_0004",
@@ -37,7 +40,8 @@
     "tag": "Computer Science",
     "dateAdded": "2025-10-01",
     "createdAt": "2025-10-01T09:00:00.000Z",
-    "updatedAt": "2025-10-01T09:00:00.000Z"
+    "updatedAt": "2025-10-01T09:00:00.000Z",
+    "cover_image": "https://covers.openlibrary.org/b/id/12431761-M.jpg"
   },
   {
     "id": "book_0005",
@@ -47,7 +51,8 @@
     "tag": "Computer Science",
     "dateAdded": "2025-10-05",
     "createdAt": "2025-10-05T14:20:00.000Z",
-    "updatedAt": "2025-10-05T14:20:00.000Z"
+    "updatedAt": "2025-10-05T14:20:00.000Z",
+    "cover_image": "https://covers.openlibrary.org/b/id/12658145-M.jpg"
   },
   {
     "id": "book_0006",
@@ -57,7 +62,8 @@
     "tag": "Fiction",
     "dateAdded": "2025-10-10",
     "createdAt": "2025-10-10T11:00:00.000Z",
-    "updatedAt": "2025-10-10T11:00:00.000Z"
+    "updatedAt": "2025-10-10T11:00:00.000Z",
+    "cover_image": "https://covers.openlibrary.org/b/id/9261456-M.jpg"
   },
   {
     "id": "book_0007",
@@ -67,7 +73,8 @@
     "tag": "Science",
     "dateAdded": "2025-10-15",
     "createdAt": "2025-10-15T16:30:00.000Z",
-    "updatedAt": "2025-10-15T16:30:00.000Z"
+    "updatedAt": "2025-10-15T16:30:00.000Z",
+    "cover_image": "https://covers.openlibrary.org/b/id/12662054-M.jpg"
   },
   {
     "id": "book_0008",
@@ -77,7 +84,8 @@
     "tag": "Psychology",
     "dateAdded": "2025-10-20",
     "createdAt": "2025-10-20T10:15:00.000Z",
-    "updatedAt": "2025-10-20T10:15:00.000Z"
+    "updatedAt": "2025-10-20T10:15:00.000Z",
+    "cover_image": "https://covers.openlibrary.org/b/id/12513470-M.jpg"
   },
   {
     "id": "book_0009",
@@ -87,7 +95,8 @@
     "tag": "Self-Help",
     "dateAdded": "2025-10-25",
     "createdAt": "2025-10-25T08:45:00.000Z",
-    "updatedAt": "2025-10-25T08:45:00.000Z"
+    "updatedAt": "2025-10-25T08:45:00.000Z",
+    "cover_image": "https://covers.openlibrary.org/b/id/10543666-M.jpg"
   },
   {
     "id": "book_0010",
@@ -97,7 +106,8 @@
     "tag": "Computer Science",
     "dateAdded": "2025-11-01",
     "createdAt": "2025-11-01T13:00:00.000Z",
-    "updatedAt": "2025-11-01T13:00:00.000Z"
+    "updatedAt": "2025-11-01T13:00:00.000Z",
+    "cover_image": "https://covers.openlibrary.org/b/id/11425174-M.jpg"
   },
   {
     "id": "book_0011",
@@ -107,7 +117,8 @@
     "tag": "Fantasy",
     "dateAdded": "2025-11-05",
     "createdAt": "2025-11-05T09:30:00.000Z",
-    "updatedAt": "2025-11-05T09:30:00.000Z"
+    "updatedAt": "2025-11-05T09:30:00.000Z",
+    "cover_image": "https://covers.openlibrary.org/b/id/11379760-M.jpg"
   },
   {
     "id": "book_0012",
@@ -117,7 +128,8 @@
     "tag": "Computer Science",
     "dateAdded": "2025-11-10",
     "createdAt": "2025-11-10T14:00:00.000Z",
-    "updatedAt": "2025-11-10T14:00:00.000Z"
+    "updatedAt": "2025-11-10T14:00:00.000Z",
+    "cover_image": "https://covers.openlibrary.org/b/id/11100366-M.jpg"
   },
   {
     "id": "book_0013",
@@ -127,7 +139,8 @@
     "tag": "Computer Science",
     "dateAdded": "2025-11-15",
     "createdAt": "2025-11-15T11:20:00.000Z",
-    "updatedAt": "2025-11-15T11:20:00.000Z"
+    "updatedAt": "2025-11-15T11:20:00.000Z",
+    "cover_image": "https://covers.openlibrary.org/b/id/10505166-M.jpg"
   },
   {
     "id": "book_0014",
@@ -137,7 +150,8 @@
     "tag": "Computer Science",
     "dateAdded": "2025-11-20",
     "createdAt": "2025-11-20T16:45:00.000Z",
-    "updatedAt": "2025-11-20T16:45:00.000Z"
+    "updatedAt": "2025-11-20T16:45:00.000Z",
+    "cover_image": "https://covers.openlibrary.org/b/id/8350176-M.jpg"
   },
   {
     "id": "book_0015",
@@ -147,6 +161,7 @@
     "tag": "Computer Science",
     "dateAdded": "2025-11-25",
     "createdAt": "2025-11-25T10:00:00.000Z",
-    "updatedAt": "2025-11-25T10:00:00.000Z"
+    "updatedAt": "2025-11-25T10:00:00.000Z",
+    "cover_image": "https://covers.openlibrary.org/b/id/12658150-M.jpg"
   }
 ]

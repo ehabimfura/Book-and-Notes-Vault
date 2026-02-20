@@ -63,8 +63,10 @@ $(document).ready(function () {
             tag: "Scraped",
             dateAdded: new Date().toISOString().split('T')[0],
             createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString()
+            updatedAt: new Date().toISOString(),
+            cover_image: null
         };
+
 
         books.push(newBook);
         localStorage.setItem('bookVaultData', JSON.stringify(books));

@@ -90,9 +90,10 @@ function readFormData() {
         pages: fields.pages.value,
         tag: fields.tag.value,
         dateAdded: fields.dateAdded.value,
-        imageFile: fields.image.files[0]
+        coverImageFile: fields.image.files[0]
     };
 }
+
 
 
 
@@ -144,7 +145,7 @@ function handleSubmit(e) {
                 tag: data.tag,
                 dateAdded: data.dateAdded,
                 updatedAt: now,
-                ...(imageData ? { image: imageData } : {})
+                ...(imageData ? { cover_image: imageData } : {})
             });
             announce(`"${data.title}" was updated.`);
         } else {
@@ -158,25 +159,27 @@ function handleSubmit(e) {
                 dateAdded: data.dateAdded,
                 createdAt: now,
                 updatedAt: now,
-                image: imageData || null
+                cover_image: imageData || null
             });
             announce(`"${data.title}" was added.`);
         }
+
 
         resetForm();
         document.dispatchEvent(new CustomEvent(BOOK_SAVED_EVENT));
     };
 
     // If an image was picked, read it first
-    if (data.imageFile) {
+    if (data.coverImageFile) {
         const reader = new FileReader();
         reader.onload = (e) => finalizeSave(e.target.result);
         reader.onerror = () => finalizeSave(null);
-        reader.readAsDataURL(data.imageFile);
+        reader.readAsDataURL(data.coverImageFile);
     } else {
         finalizeSave(null);
     }
 }
+
 
 
 

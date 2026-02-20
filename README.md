@@ -8,7 +8,7 @@ A personal, framework-free app to track your books, pages, tags, and reading not
 - **Total Stats**: See your total books, total pages, and top tag at a glance.
 - **Reading Goal**: Set a target for the number of books you want to read and see your progress bar grow.
 - **Activity Trend**: A small bar chart shows how many books you have added over the last 7 days.
-- **Unit Toggle**: Switch between **Pages** and **Hours** as your main unit on the dashboard.
+- **Unit Preference**: Choose between **Minutes** and **Hours** as your base unit to estimate reading time on the dashboard alongside Total Pages.
 
 ### 2. Records
 - **Grid & Table**: View your collection in a responsive table (desktop) or as cards (mobile).
@@ -26,8 +26,7 @@ A personal, framework-free app to track your books, pages, tags, and reading not
 - **Import/Export**: Save your entire collection to a JSON file or import data from a previous export.
 
 ## Settings & Customization
-- **Currency**: Choose your preferred currency (USD, EUR, GBP, RWF) for the catalog.
-- **Reading Speed**: Adjust your "Pages Per Hour" speed to get accurate time estimates.
+- **Reading Speed**: Adjust your reading speed depending on your base unit (Pages per hour or Pages per minute) to get accurate time estimates.
 - **Persistence**: Your data is saved in your browser's `localStorage`. No login required!
 
 ## Keyboard Shortcuts

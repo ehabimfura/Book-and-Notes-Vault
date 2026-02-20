@@ -9,8 +9,7 @@ const DEFAULT_SETTINGS = {
     target: 50,
     sortField: 'dateAdded',
     sortDirection: 'desc',
-    baseUnit: 'pages',
-    currency: 'USD'
+    baseUnit: 'minutes'
 };
 
 

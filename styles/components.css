@@ -32,8 +32,10 @@
     color: var(--clr-heading);
 }
 
-.logo-icon {
-    font-size: var(--fs-xl);
+.logo-image {
+    height: 32px;
+    width: auto;
+    object-fit: contain;
 }
 
 /* ---------- Hamburger / Nav Toggle ---------- */
@@ -260,11 +262,48 @@
     background: var(--clr-surface-alt);
 }
 
-.btn--icon[aria-pressed="true"] {
-    background: var(--clr-primary);
-    color: var(--clr-text-inverse);
-    border-color: var(--clr-primary);
+.btn--search-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    border-radius: 0 var(--radius-pill) var(--radius-pill) 0;
+    margin-left: -100px;
+    /* Pull it in further for a more 'integrated' feel */
+    z-index: 10;
+    padding: 0 2rem;
+    min-width: 120px;
+
+    background: linear-gradient(135deg, var(--clr-primary) 0%, var(--clr-primary-dark) 100%);
+    color: white;
+    border: none;
+    cursor: pointer;
+    box-shadow: -4px 0 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.2s ease;
 }
+
+.btn--search-icon:hover {
+    transform: scale(1.05);
+    filter: brightness(1.1);
+    box-shadow: -6px 0 20px rgba(0, 0, 0, 0.15);
+}
+
+.btn--search-icon:active {
+    transform: scale(0.95);
+}
+
+.icon-search {
+    flex-shrink: 0;
+    stroke-width: 3px;
+}
+
+
+
+
+.search-icon-text {
+    font-size: 0.75rem;
+}
+
 
 /* Sort buttons */
 .btn--sort {
@@ -401,18 +440,21 @@
 .search-input-group {
     display: flex;
     gap: var(--sp-sm);
-    align-items: center;
+    align-items: stretch;
+
 }
 
 .search-input {
     flex: 1;
-    padding: 0.75rem var(--sp-md);
+    padding: 0.75rem 90px 0.75rem var(--sp-md);
+    /* Extra right padding for the search button */
     border: 1px solid var(--clr-border);
     border-radius: var(--radius-pill);
     font-size: var(--fs-base);
     background: var(--clr-surface);
     transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
 }
+
 
 .search-input:focus {
     border-color: var(--clr-primary);

@@ -9,31 +9,43 @@ import { highlightText } from './search.js';
 const tbody = document.getElementById('records-tbody');
 const cardsContainer = document.getElementById('records-cards');
 const emptyState = document.getElementById('empty-state');
+const emptyStateText = document.getElementById('empty-state-text');
 const totalBooksEl = document.getElementById('stat-total-books');
 const totalPagesEl = document.getElementById('stat-total-pages');
 const topTagEl = document.getElementById('stat-top-tag');
 const targetProgressEl = document.getElementById('stat-target-progress');
 const progressFill = document.getElementById('target-progress-fill');
 const trendChart = document.getElementById('trend-chart');
+const volumeLabel = document.getElementById('stat-volume-label');
+
 
 /** Draw the list of books in the table and as cards */
-export function renderRecords(books, query, isCaseSensitive, onEdit, onDelete) {
+export function renderRecords(books, query, isCaseSensitive, totalBooksCount, onEdit, onDelete) {
   tbody.innerHTML = '';
   cardsContainer.innerHTML = '';
 
   if (books.length === 0) {
     emptyState.hidden = false;
+
+    // Choose message based on total books
+    if (totalBooksCount > 0) {
+      emptyStateText.innerHTML = `No results matched your search, <a href="#add-form">add a book</a>.`;
+    } else {
+      emptyStateText.innerHTML = `No books yet. <a href="#add-form">Add your first book!</a>`;
+    }
     return;
   }
   emptyState.hidden = true;
+
 
   books.forEach(book => {
     const bookTitle = highlightText(book.title, query, isCaseSensitive);
     const bookAuthor = highlightText(book.author, query, isCaseSensitive);
     const bookTag = highlightText(book.tag, query, isCaseSensitive);
-    const imageHtml = book.image
-      ? `<img src="${book.image}" alt="Cover of ${book.title}" class="book-cover-mini" />`
+    const imageHtml = book.cover_image
+      ? `<img src="${book.cover_image}" alt="Cover of ${book.title}" class="book-cover-mini" />`
       : `<button class="btn btn--small btn--add-img" data-id="${book.id}">+ Image</button>`;
+
 
     // Table Row
     const tr = document.createElement('tr');
@@ -68,19 +80,20 @@ export function renderRecords(books, query, isCaseSensitive, onEdit, onDelete) {
     card.className = 'record-card';
     card.innerHTML = `
       <div class="card-header">
-        ${book.image ? `<img src="${book.image}" alt="Cover" class="book-cover-card" />` : ''}
+        ${book.cover_image ? `<img src="${book.cover_image}" alt="Cover" class="book-cover-card" />` : ''}
         <h3>${bookTitle}</h3>
       </div>
       <p><strong>Author:</strong> ${bookAuthor}</p>
       <p><strong>Pages:</strong> ${book.pages}</p>
       <p><strong>Tag:</strong> ${bookTag}</p>
       <p><strong>Date:</strong> ${book.dateAdded}</p>
-      ${!book.image ? `<button class="btn btn--secondary btn--small btn--add-img-card" style="margin-bottom:1rem">+ Add Image</button>` : ''}
+      ${!book.cover_image ? `<button class="btn btn--secondary btn--small btn--add-img-card" style="margin-bottom:1rem">+ Add Image</button>` : ''}
       <div class="card-actions">
         <button class="btn btn--small btn--edit" data-id="${book.id}">Edit</button>
         <button class="btn btn--small btn--danger" data-id="${book.id}">Delete</button>
       </div>
     `;
+
     card.querySelector('.btn--edit').onclick = () => onEdit(book);
     card.querySelector('.btn--danger').onclick = () => onDelete(book.id);
     const addImgBtnCard = card.querySelector('.btn--add-img-card');
@@ -103,13 +116,17 @@ export function renderStats(books, settings) {
 
   totalBooksEl.textContent = totalBooks;
 
-  // Calculate reading time in hours
-  const speed = settings.pagesPerHour || 30;
-  const hours = Math.round(totalPages / speed);
+  // Calculate reading time
+  const speed = settings.pagesPerHour || 30; // pages per hour or minute depending on baseUnit
 
-  if (settings.baseUnit === 'hours') {
-    totalPagesEl.textContent = `${hours}h (${totalPages} pages)`;
+  if (volumeLabel) volumeLabel.textContent = 'Total Pages';
+
+  if (settings.baseUnit === 'minutes') {
+    const totalMinutes = Math.round(totalPages / speed);
+    totalPagesEl.textContent = `${totalPages} (${totalMinutes} min)`;
   } else {
+    // default to hours
+    const hours = Math.round(totalPages / speed);
     totalPagesEl.textContent = `${totalPages} (${hours}h)`;
   }
 
